@@ -18,6 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+from util import *
 
 class SearchProblem:
     """
@@ -86,12 +87,56 @@ def depthFirstSearch(problem: SearchProblem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    visited=[]
+    frontier = Stack()
+    frontier.push((problem.getStartState(), None, None))
+    goal_found = False
+    while not goal_found:
+        node = frontier.pop()
+        if problem.isGoalState(node[0]):
+            goal_found = True
+        else:
+            visited.append(node[0])
+            for child in problem.getSuccessors(node[0]):
+                if not (child[0] in visited or child in frontier.list):
+                    frontier.push((child[0], child[1], node))
+    
+    path = []
+    
+    while node[2] != None:
+        if node[1] != None:
+            path.insert(0, node[1])
+            
+        node = node[2]
+    
+    return path
 
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    visited=[]
+    frontier = Queue()
+    frontier.push((problem.getStartState(), None, None))
+    goal_found = False
+    while not goal_found:
+        node = frontier.pop()
+        if problem.isGoalState(node[0]):
+            goal_found = True
+        else:
+            visited.append(node[0])
+            for child in problem.getSuccessors(node[0]):
+                if not (child[0] in visited or child in frontier.list):
+                    frontier.push((child[0], child[1], node))
+    
+    path = []
+    
+    while node[2] != None:
+        if node[1] != None:
+            path.insert(0, node[1])
+            
+        node = node[2]
+    
+    return path
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
